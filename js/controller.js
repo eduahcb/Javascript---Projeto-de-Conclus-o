@@ -1,9 +1,9 @@
-let criaController = function (jogo) {
+const criaController = function (jogo) {
 
-    $entrada = $('#entrada');
-    $lacunas = $('.lacunas');
+    const $entrada = $('#entrada');
+    const $lacunas = $('.lacunas');
 
-    let exibeLacunas = function () {
+    const exibeLacunas = function () {
         // let lacunas = jogo.getLacunas();
         $lacunas.empty();
         jogo.getLacunas().forEach(lacuna => {
@@ -12,46 +12,57 @@ let criaController = function (jogo) {
     };
 
     // muda o texto do placeHolder do campo de entrada    
-    let mudaPlaceHolder = function (texto) {
+    const mudaPlaceHolder = function (texto) {
         $entrada.val("").attr("placeholder", texto);
     };
 
     // passa para jogo.setPalavraSecreta() o valor digitado pelo jogador e chama o a função `exibeLacunas()` e `mudaPlaceHolder()` definidas no controller. 
 
-    let guardaPalavraSecreta = function () {
-        jogo.setPalavraSecreta($entrada.val().trim());
-        exibeLacunas();
-        mudaPlaceHolder("chuta");
+    const guardaPalavraSecreta = function () {
+
+        try{
+            jogo.setPalavraSecreta($entrada.val().trim());
+            exibeLacunas();
+            mudaPlaceHolder("chuta");
+        }
+        catch(err){
+            alert(err.message);
+        }
     };
 
-    let reinicia = function(){
+    const reinicia = function(){
         jogo.reinicia();
         $lacunas.empty();
         mudaPlaceHolder("Palavra secreta");
     };
 
-    let leChute = function () {
-        jogo.processaChute($entrada.val().trim().substr(0, 1));
-        $entrada.val('');
-        exibeLacunas();
-
-        setTimeout(()=>{
-            if (jogo.ganhouOuperdeu()) {
-                if (jogo.ganhou()) alert("Parabéns, você ganhou");
-                else if (jogo.perdeu()) alert("Que pensa, tente novamente");
+    const leChute = function () {
+        
+        try{
+            jogo.processaChute($entrada.val().trim().substr(0, 1));
+            $entrada.val('');
+            exibeLacunas();
     
-                reinicia();
-            }
-        }, 300);
+            setTimeout(()=>{
+                if (jogo.ganhouOuperdeu()) {
+                    if (jogo.ganhou()) alert("Parabéns, você ganhou");
+                    else if (jogo.perdeu()) alert("Que pensa, tente novamente");
+        
+                    reinicia();
+                }
+            }, 300);
+        }
+        catch (err){
+            alert(err.message);
+        }
     };
 
     // faz a associação do evento keypress para capturar a entrada do usuário toda vez que ele teclar ENTER
-    let inicia = function () {
+    const inicia = function () {
 
         $entrada.keypress(function (event) {
 
             if (event.which == 13) {
-                console.log("entrou condição");
                 switch (jogo.getEtapa()) {
                     case 1:
                         guardaPalavraSecreta();
