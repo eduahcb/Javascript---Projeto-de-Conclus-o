@@ -55,7 +55,7 @@ let criaJogo = function(sprite){
     };
 
     let getEtapa = function(){
-        console.log(etapa);
+       return etapa;
     };
 
     return {
